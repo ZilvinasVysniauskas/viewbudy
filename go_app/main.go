@@ -8,7 +8,7 @@ package main
 // Add the typedef here so Go knows about it
 typedef void (*CLogCallback)(const char*);
 
-#include "libplayer.h"
+#include "../obj-c-interface/libplayer.h"
 */
 import "C"
 
@@ -18,8 +18,6 @@ import (
 	"unsafe"
 )
 
-type CLogCallback func(*C.char)
-
 //export logMessage
 func logMessage(cmsg *C.char) {
 	msg := C.GoString(cmsg)
@@ -27,7 +25,8 @@ func logMessage(cmsg *C.char) {
 }
 
 func main() {
-	err := play("/Users/zilvis/projects/viewbudy/testvideo.mp4")
+	fmt.Println("started go app")
+	err := play("/Users/zilvis/projects/viewbudy/go_app/testvideo.mp4")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -40,5 +39,13 @@ func play(path string) error {
 	defer C.free(unsafe.Pointer(cpath))
 
 	C.playVideo(cpath)
+
+	// for i := 0; i < 300; i++ { // Run events for ~3 seconds
+	// 	C.processEvents()
+	// 	time.Sleep(10 * time.Millisecond)
+	// }
+
+	C.pauseVideo()
+
 	return nil
 }

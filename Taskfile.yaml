@@ -1,0 +1,23 @@
+version: "3"
+
+tasks:
+  build:
+    desc: Build Go + Objective-C app
+    cmds:
+      - go build -buildmode=c-archive -o ./../obj-c-interface/libviewbudy.a ./go_app/main.go
+      # - clang -c -framework AVFoundation -framework AVKit -framework AppKit libviewbudy.m -o libviewbudy.o
+      # - ar rcs libgobridge.a gobridge.o
+
+      # # Build the Go binary and link the Obj-C static lib + frameworks
+      # - go build -o viewbudy \
+      #   -ldflags "-linkmode external \
+      #   -extld clang \
+      #   -extldflags '-framework AVFoundation \
+      #   -framework AVKit \
+      #   -framework AppKit \
+      #   -L. -lgobridge'"
+
+  clean:
+    desc: Remove build artifacts
+    cmds:
+      - rm -f gobridge.o libgobridge.a viewbudy
