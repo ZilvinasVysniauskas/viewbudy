@@ -4,20 +4,12 @@ tasks:
   build:
     desc: Build Go + Objective-C app
     cmds:
-      - go build -buildmode=c-archive -o ./../obj-c-interface/libviewbudy.a ./go_app/main.go
-      # - clang -c -framework AVFoundation -framework AVKit -framework AppKit libviewbudy.m -o libviewbudy.o
-      # - ar rcs libgobridge.a gobridge.o
+      - rm -rf ./go_app/bin ./obj-c-interface/bin && mkdir ./go_app/bin  ./obj-c-interface/bin
+      - go build -buildmode=c-archive -o ./obj-c-interface/bin/golib.a ./go_app/main.go
+      - cp ./go_app/libplayer.h ./obj-c-interface/bin
+      - clang -fobjc-arc ./obj-c-interface/main.m ./obj-c-interface/player_controls.m ./obj-c-interface/bin/golib.a  -framework Cocoa -framework AVKit -framework AVFoundation -o VideoPlayer
 
-      # # Build the Go binary and link the Obj-C static lib + frameworks
-      # - go build -o viewbudy \
-      #   -ldflags "-linkmode external \
-      #   -extld clang \
-      #   -extldflags '-framework AVFoundation \
-      #   -framework AVKit \
-      #   -framework AppKit \
-      #   -L. -lgobridge'"
-
-  clean:
-    desc: Remove build artifacts
+  run:
+    desc: Run app
     cmds:
-      - rm -f gobridge.o libgobridge.a viewbudy
+      - ./go_app/bin/viewbudy

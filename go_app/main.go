@@ -2,50 +2,27 @@ package main
 
 /*
 #cgo CFLAGS: -x objective-c -fmodules -fobjc-arc
-#cgo LDFLAGS: -L${SRCDIR} -lplayer
+#cgo LDFLAGS: -L${SRCDIR}/bin -lplayer
 #include <stdlib.h>
 
 // Add the typedef here so Go knows about it
 typedef void (*CLogCallback)(const char*);
 
-#include "../obj-c-interface/libplayer.h"
+#include "libplayer.h"
 */
 import "C"
-
 import (
 	"fmt"
-	"log"
-	"unsafe"
+	"time"
 )
 
-//export logMessage
-func logMessage(cmsg *C.char) {
-	msg := C.GoString(cmsg)
-	fmt.Println("[Objective-C]", msg)
+//export StartGoLogic
+func StartGoLogic() {
+	go func() {
+		time.Sleep(5 * time.Second)
+		fmt.Println("Simulating incoming request: pause")
+		C.pauseVideo()
+	}()
 }
 
-func main() {
-	fmt.Println("started go app")
-	err := play("/Users/zilvis/projects/viewbudy/go_app/testvideo.mp4")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	select {} // Keep app running
-}
-
-func play(path string) error {
-	cpath := C.CString(path)
-	defer C.free(unsafe.Pointer(cpath))
-
-	C.playVideo(cpath)
-
-	// for i := 0; i < 300; i++ { // Run events for ~3 seconds
-	// 	C.processEvents()
-	// 	time.Sleep(10 * time.Millisecond)
-	// }
-
-	C.pauseVideo()
-
-	return nil
-}
+func main() {}

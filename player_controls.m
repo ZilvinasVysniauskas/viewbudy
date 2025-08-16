@@ -1,4 +1,4 @@
-#include "gobridge.h"
+#include "bin/golib.h"
 #import <AVFoundation/AVFoundation.h>
 #import <AVKit/AVKit.h>
 #import <AppKit/AppKit.h>
@@ -11,9 +11,6 @@ void playVideo(const char *path) {
     // Log the start of the function and the path received.
     NSString *msg =
         [NSString stringWithFormat:@"playVideo called with path: %s", path];
-
-    // Convert NSString to UTF-8 C string and pass to logMessage
-    logMessage((char *)[msg UTF8String]);
 
     NSString *nsPath = [NSString stringWithUTF8String:path];
     NSURL *url = [NSURL fileURLWithPath:nsPath];
@@ -39,8 +36,6 @@ void playVideo(const char *path) {
     [app activateIgnoringOtherApps:YES];
     [gPlayer play];
 
-    // The app run loop is a blocking call, so this log won't show up until it's
-    // finished.
     [app run];
   }
 }
@@ -49,25 +44,6 @@ void pauseVideo(void) {
   @autoreleasepool {
     if (gPlayer) {
       [gPlayer pause];
-      logMessage("Video playback paused.");
-    } else {
-      logMessage("Cannot pause: no player instance available.");
     }
   }
-}
-
-void processEvents(void) {
-    @autoreleasepool {
-        NSApplication *app = [NSApplication sharedApplication];
-        NSEvent *event;
-
-        // Process one batch of events, non-blocking
-        while ((event = [app nextEventMatchingMask:NSEventMaskAny
-                                         untilDate:[NSDate dateWithTimeIntervalSinceNow:0.01]
-                                            inMode:NSDefaultRunLoopMode
-                                           dequeue:YES])) {
-            [app sendEvent:event];
-        }
-        [app updateWindows];
-    }
 }
