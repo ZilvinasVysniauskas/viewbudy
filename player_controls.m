@@ -40,10 +40,18 @@ void playVideo(const char *path) {
   }
 }
 
-void pauseVideo(void) {
+void pauseCurrentVideo(void) {
   @autoreleasepool {
     if (gPlayer) {
       [gPlayer pause];
+    }
+  }
+}
+
+void continueCurrentVideo(void) {
+  @autoreleasepool {
+    if (gPlayer) {
+      [gPlayer play];
     }
   }
 }

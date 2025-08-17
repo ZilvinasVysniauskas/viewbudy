@@ -4,10 +4,10 @@ tasks:
   build:
     desc: Build Go + Objective-C app
     cmds:
-      - rm -rf ./go_app/bin ./obj-c-interface/bin && mkdir ./go_app/bin  ./obj-c-interface/bin
-      - go build -buildmode=c-archive -o ./obj-c-interface/bin/golib.a ./go_app/main.go
-      - cp ./go_app/libplayer.h ./obj-c-interface/bin
-      - clang -fobjc-arc ./obj-c-interface/main.m ./obj-c-interface/player_controls.m ./obj-c-interface/bin/golib.a  -framework Cocoa -framework AVKit -framework AVFoundation -o VideoPlayer
+      - rm -rf ./go_app/bin ./bin && mkdir ./go_app/bin  ./bin
+      - go build -buildmode=c-archive -o ./bin/golib.a ./go_app/main.go
+      - cp ./go_app/libplayer.h ./bin
+      - clang -fobjc-arc main.m player_controls.m bin/golib.a  -framework Cocoa -framework AVKit -framework AVFoundation -o VideoPlayer
 
   run:
     desc: Run app

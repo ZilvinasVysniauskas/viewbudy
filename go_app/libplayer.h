@@ -1,1 +1,2 @@
-void pauseVideo(void);
+void pauseCurrentVideo(void);
+void continueCurrentVideo(void);
