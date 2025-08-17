@@ -8,3 +8,10 @@ tasks:
       - go build -buildmode=c-archive -o ./mac_app/bin/golib.a ./go_app/main.go
       - cp ./go_app/libplayer.h ./mac_app/bin
       - clang -fobjc-arc ./mac_app/main.m ./mac_app/player_controls.m ./mac_app/bin/golib.a  -framework Cocoa -framework AVKit -framework AVFoundation -o ./mac_app/VideoPlayer
+  build-windows:
+    desc: build windows
+    cmds:
+      - rm -rf ./go_app/bin && mkdir ./go_app/bin
+      - go build -o ./windows_app/bin/golib.dll ./go_app/main.go
+      # - cp ./go_app/libplayer.h ./mac_app/bin
+      # - clang -fobjc-arc ./mac_app/main.m ./mac_app/player_controls.m ./mac_app/bin/golib.a  -framework Cocoa -framework AVKit -framework AVFoundation -o ./mac_app/VideoPlayer

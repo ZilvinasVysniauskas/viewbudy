@@ -45,7 +45,6 @@ func StartGoLogic() {
 			fmt.Println("Received from receivedFromPeerChan:", msg)
 		}
 	}()
-
 }
 
 const SERVER_ADDR = "70.34.248.18:9000"
