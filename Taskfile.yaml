@@ -1,15 +1,10 @@
 version: "3"
 
 tasks:
-  build:
+  build-mac:
     desc: Build Go + Objective-C app
     cmds:
-      - rm -rf ./go_app/bin ./bin && mkdir ./go_app/bin  ./bin
-      - go build -buildmode=c-archive -o ./bin/golib.a ./go_app/main.go
-      - cp ./go_app/libplayer.h ./bin
-      - clang -fobjc-arc main.m player_controls.m bin/golib.a  -framework Cocoa -framework AVKit -framework AVFoundation -o VideoPlayer
-
-  run:
-    desc: Run app
-    cmds:
-      - ./go_app/bin/viewbudy
+      - rm -rf ./go_app/bin ./mac_app/bin && mkdir ./go_app/bin  ./mac_app/bin
+      - go build -buildmode=c-archive -o ./mac_app/bin/golib.a ./go_app/main.go
+      - cp ./go_app/libplayer.h ./mac_app/bin
+      - clang -fobjc-arc ./mac_app/main.m ./mac_app/player_controls.m ./mac_app/bin/golib.a  -framework Cocoa -framework AVKit -framework AVFoundation -o ./mac_app/VideoPlayer
